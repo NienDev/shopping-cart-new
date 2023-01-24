@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { AddShoppingCart } from "@mui/icons-material";
 import Cart from "./Cart";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 interface ItemProps {
   name: string;
@@ -23,11 +23,7 @@ interface CartItemProps {
   quantity: number;
 }
 
-interface NavbarProps {
-  cartItems: CartItemProps[];
-}
-
-const Navbar = ({ cartItems }: NavbarProps) => {
+const Navbar = () => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = (value: boolean) => {
@@ -65,7 +61,7 @@ const Navbar = ({ cartItems }: NavbarProps) => {
           <IconButton onClick={() => handleOpen(true)}>
             <AddShoppingCart sx={{ color: "white" }} />
           </IconButton>
-          <Cart open={open} handleOpen={handleOpen} cartItems={cartItems} />
+          <Cart open={open} handleOpen={handleOpen} />
         </Toolbar>
       </AppBar>
     </>

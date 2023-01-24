@@ -8,10 +8,12 @@ import {
   CardContent,
   Typography,
 } from "@mui/material";
+import { useContext } from "react";
+import { CartContext } from "../context/CartContext";
+import IncDecBtn from "./IncDecBtn";
 
 interface CustomCardProps {
   item: ItemProps;
-  handleClicked: (item: ItemProps) => void;
 }
 
 interface ItemProps {
@@ -21,11 +23,14 @@ interface ItemProps {
   imgUrl: string;
 }
 
-const CustomCard = ({ item, handleClicked }: CustomCardProps) => {
+const CustomCard = ({ item }: CustomCardProps) => {
   const { imgUrl, price, name, id } = item;
+
+  const { handleClicked, getQuantity } = useContext(CartContext);
+
   return (
     <>
-      <Card sx={{ width: "360px" }} elevation={4}>
+      <Card sx={{ width: "300px" }} elevation={4}>
         <CardMedia
           src={
             imgUrl
@@ -49,13 +54,19 @@ const CustomCard = ({ item, handleClicked }: CustomCardProps) => {
           </Stack>
         </CardContent>
         <CardActions>
-          <Button
-            variant="contained"
-            sx={{ width: "90%", mx: "auto" }}
-            onClick={() => handleClicked(item)}
-          >
-            Add To Card
-          </Button>
+          {getQuantity(id) ? (
+            <IncDecBtn id={id} quantity={getQuantity(id)} />
+          ) : (
+            <Button
+              variant="contained"
+              sx={{ width: "90%", mx: "auto" }}
+              onClick={() => {
+                handleClicked(item);
+              }}
+            >
+              Add To Card
+            </Button>
+          )}
         </CardActions>
       </Card>
     </>

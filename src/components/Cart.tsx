@@ -11,14 +11,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Remove, Add, Close } from "@mui/icons-material";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./blurBg.css";
 import CartItem from "./CartItem";
-
+import { CartContext } from "../context/CartContext";
 interface CartProps {
   open: boolean;
   handleOpen: (value: boolean) => void;
-  cartItems: CartItemProps[];
 }
 
 interface ItemProps {
@@ -33,7 +32,8 @@ interface CartItemProps {
   quantity: number;
 }
 
-const Cart = ({ open, handleOpen, cartItems }: CartProps) => {
+const Cart = ({ open, handleOpen }: CartProps) => {
+  const { items } = useContext(CartContext);
   return (
     <>
       <IconButton
@@ -68,7 +68,7 @@ const Cart = ({ open, handleOpen, cartItems }: CartProps) => {
         }}
         style={{ right: `${open ? "0px" : "-400px"}` }}
       >
-        {cartItems.map((item) => (
+        {items.map((item) => (
           <CartItem
             key={item.info.id}
             info={item.info}

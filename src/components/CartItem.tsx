@@ -13,12 +13,7 @@ import {
 import { Remove, Add, Close } from "@mui/icons-material";
 import React, { useState } from "react";
 import "./blurBg.css";
-
-interface CartProps {
-  open: boolean;
-  handleOpen: (value: boolean) => void;
-  cartItems: CartItemProps[];
-}
+import IncDecBtn from "./IncDecBtn";
 
 interface ItemProps {
   name: string;
@@ -66,39 +61,8 @@ const CartItem = ({ info, quantity }: CartItemProps) => {
             </Box>
           </CardContent>
         </Box>
-        <CardActions
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "space-around",
-            alignItems: "center",
-          }}
-        >
-          <IconButton
-            sx={{
-              boxShadow: "1px 1px 2px 0 rgba(0,0,0,0.5)",
-            }}
-          >
-            <Remove />
-          </IconButton>
-          <Typography
-            variant="body2"
-            sx={{
-              p: ".2em",
-              px: ".4em",
-              borderRadius: "4px",
-              boxShadow: "1px 1px 2px 0 rgba(0,0,0,0.5)",
-            }}
-          >
-            {quantity}
-          </Typography>
-          <IconButton
-            sx={{
-              boxShadow: "1px 1px 2px 0 rgba(0,0,0,0.5)",
-            }}
-          >
-            <Add />
-          </IconButton>
+        <CardActions>
+          <IncDecBtn id={info.id} quantity={quantity} key={info.id} />
         </CardActions>
       </Card>
     </>

@@ -3,6 +3,7 @@ import { useState } from "react";
 import CustomCard from "./components/CustomCard";
 import Navbar from "./components/Navbar";
 import data from "./data/data.json";
+import { CartProvider } from "./context/CartContext";
 
 interface ItemProps {
   name: string;
@@ -18,64 +19,31 @@ interface CartItemProps {
 
 function App() {
   const [items, setItems] = useState<CartItemProps[]>([]);
-  const handleClicked = (clickedItem: ItemProps) => {
-    // if in cart does not contain this product with specific id
-    const targetItemIndex = items.findIndex(
-      (item) => item.info.id == clickedItem.id
-    );
-    // console.log(targetItemIndex);
-    if (targetItemIndex != -1) {
-      setItems((items) => {
-        return items.map((item, i) =>
-          i == targetItemIndex
-            ? { info: item.info, quantity: item.quantity + 1 }
-            : item
-        );
-      });
-    } else {
-      setItems((items) => {
-        return [...items, { info: clickedItem, quantity: 1 }];
-      });
-    }
-    const decrease = (id: number) => {
-      setItems((items) => {
-        let newItems: CartItemProps[] = [];
-        items.forEach((item) => {
-          if (item.info.id == id) {
-            if (item.quantity - 1 > 0) {
-              newItems.push({ info: item.info, quantity: item.quantity - 1 });
-            }
-          } else {
-            newItems.push(item);
-          }
-        });
-        return newItems;
-      });
-    };
-    const increase = (id: number) => {
-      setItems((items) =>
-        items.map((item) =>
-          item.info.id == id
-            ? { info: item.info, quantity: item.quantity + 1 }
-            : item
-        )
-      );
-    };
-  };
 
   console.log(items);
   return (
-    <>
-      <CssBaseline />
-      <Navbar cartItems={items} />
-      <Grid container gap={4}>
-        {data.map((item) => (
-          <Grid item key={item.id}>
-            <CustomCard item={item} handleClicked={handleClicked} />
-          </Grid>
-        ))}
-      </Grid>
-    </>
+    <div>
+      <CartProvider>
+        <CssBaseline />
+        <Navbar />
+        <Grid
+          container
+          gap={4}
+          className="grid-container"
+          sx={{
+            gridTemplateColumns: "repeat(auto-fill, 100px)",
+            justifyContent: { xs: "center", md: "space-between" },
+          }}
+          paddingX={2}
+        >
+          {data.map((item) => (
+            <Grid item key={item.id}>
+              <CustomCard item={item} />
+            </Grid>
+          ))}
+        </Grid>
+      </CartProvider>
+    </div>
   );
 }
 
